@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { QuestionCard } from './components/questionCard/QuestionCard';
 import { fetchQuizQuestions, Difficulty, QuestionState } from './API'
+import {
+  GlobalStyle,
+  Wrapper
+} from './App.styled'
 
 
 export type AnswerObject = {
@@ -30,7 +34,7 @@ export const App = () => {
       try {
         const newQuestions  = await fetchQuizQuestions(
           TOTAL_QUESTIONS,
-          Difficulty.MEDIUM
+          Difficulty.EASY
         )
 
         setQuestions(newQuestions);
@@ -62,18 +66,19 @@ export const App = () => {
   }
 
   const nextQuestion = () => {
-    const next = number + 1;
+    const nextQuestion = number + 1;
 
-    if (next === TOTAL_QUESTIONS) {
+    if (nextQuestion === TOTAL_QUESTIONS) {
       setGameOver(true)
     } else {
-      setNumber(next)
+      setNumber(nextQuestion)
     }
   }
 
   return (
     <>
-      <div className="App">
+      <GlobalStyle />
+      <Wrapper>
         <h1>Quiz</h1>
         {
           gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
@@ -82,7 +87,7 @@ export const App = () => {
             </button>
           ) : null
         }
-        {!gameOver ? <p className='score'>Score: </p> : null}
+        {!gameOver ? <p className='score'>Score: {score} </p> : null}
         {loading && <p>Loading ...</p>}
         { !loading && !gameOver && (
           <QuestionCard
@@ -102,7 +107,7 @@ export const App = () => {
             </button>
           ) : null
         }
-      </div>
+      </Wrapper>
     </>
   );
 }
